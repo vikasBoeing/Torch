@@ -6,31 +6,33 @@ from collections import deque
 import matplotlib.pyplot as plt
 from src.dqn.agent import Agent
 
+## drone
+from src.airsim.drone import Device
 class DQN():
     def __init__(self):
         '''
         constructor
         '''
-        self.env = gym.make('LunarLander-v2')
+        # self.env = gym.make('LunarLander-v2')
+        self.env = Device()
         self.prt(self.env.action_space)
-        self.prt(self.env.observation_space)
-        self.agent = Agent(state_size=8, action_size=4, seed=0)
+        self.agent = Agent(state_size=1, action_size=7, seed=0)
     pass
 
     def prt(self,*values):
         print("Values: {}".format(values))
 
     def start(self):
-        agent = Agent(state_size=8, action_size=4, seed=0)
+        agent = self.agent
         state = self.env.reset()
         for j in range(200):
             action = agent.act(state)
-            self.env.render()
+            # self.env.render()
             state, reward, done, _ = self.env.step(action)
             if done:
                 print("Done")
                 break
-        self.env.close()
+        # self.env.close()
 
     def train(self, nEpisodes=2000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.995):
         '''
